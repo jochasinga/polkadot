@@ -3,7 +3,11 @@
 #lang typed/racket
 
 (require/typed 2htdp/image
-               [circle (-> Natural Symbol Any Any)])
+               [circle (-> Natural Symbol Any Any)]
+               [rectangle (-> Natural Natural Symbol Any Any)]
+               [beside (-> Any * Any)]
+               [place-image (-> Any Real Real Any Any)])
+                       
 (require/typed rackunit
                [check-equal? (-> Any Any Void)])
 
@@ -20,9 +24,22 @@
 (check-equal? (dot 20)
               (circle 20 MODE COLOR))
 
-(: dots (-> Natural Natural Any))
-(define (dots n dist)
-  (let aux (lambda 
+;; Create a horizontal row of dots with
+;; radius `radius`,
+;; margin `margin`, and 
+;; number `n`.
+(: dots (-> Natural Integer Natural Any))
+(define (dots radius n margin)
+  (let ([u : Any (place-image
+                  (dot radius)
+                  (/ margin 2) (/ margin 2)
+                  (rectangle (* margin 2) (* margin 2) 'solid "transparent"))])
+    (if (= n 1)
+        u
+        (beside u (dots radius (- n 1) margin)))))
+  
+      
+      
 
 
 
