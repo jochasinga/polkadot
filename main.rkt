@@ -2,6 +2,7 @@
 
 #lang typed/racket
 
+(require "./color.rkt")
 (require/typed 2htdp/image
                [circle (-> Real Symbol Any Any)]
                [rectangle (-> Natural Natural Symbol Any Any)]
@@ -14,7 +15,8 @@
 
 ;; Default colors and style
 (define MODE : Symbol 'solid)
-(define COLOR : String "cornflower blue")
+(define COLOR : String "white")
+(define DEFAULT_COLOR: (color "White" "f0f0f0"))
 
 (: dot (-> Real Any))
 (define (dot radius)
