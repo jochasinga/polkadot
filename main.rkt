@@ -2,12 +2,19 @@
 
 #lang typed/racket
 
+(define-type XPlace (U String Symbol))
+(define-type YPlace (U String Symbol))
+
 (require "./color.rkt")
 (require/typed 2htdp/image
                [circle (-> Real Symbol Any Any)]
                [rectangle (-> Natural Natural Symbol Any Any)]
                [beside (-> Any * Any)]
                [above (-> Any * Any)]
+               [overlay/align (-> XPlace YPlace Any * Any)]
+               [x-place? (-> XPlace Boolean)]
+               [y-place? (-> YPlace Boolean)]
+               [image? (-> Any Boolean)]
                [place-image (-> Any Real Real Any Any)])
                        
 (require/typed rackunit
@@ -33,9 +40,13 @@
 ;; number `n`.
 (: dots (-> Real Integer Natural Any))
 (define (dots radius n margin)
-  (let ([u : Any (place-image
+;  (let ([u : Any (place-image
+;                  (dot radius)
+;                  (/ margin 2) (/ margin 2)
+;                  (rectangle (* margin 2) (* margin 2) 'solid "transparent"))])
+  (let ([u : Any (overlay/align
+                  'center 'middle
                   (dot radius)
-                  (/ margin 2) (/ margin 2)
                   (rectangle (* margin 2) (* margin 2) 'solid "transparent"))])
     (if (= n 1)
         u
