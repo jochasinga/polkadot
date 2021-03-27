@@ -6,16 +6,22 @@
                [check-equal? (-> Any Any Void)])
 
 (provide hex->rgb
-         color
+;        color
+;        struct:color
+;        make-color
+;        color-name
+;        color-hex
+         RGB
+         RGBList
+         new-RGB
          ROSETTE_AND_CREAM)
 
 ;; An assoc list like '(('r 255) ('g 255) ('b 0))
-;; (define-type RGB (Listof (Pairof Symbol Byte)))
-(define-type RGB (Listof (Pairof Symbol (U Char Complex False))))
+(define-type RGB (Listof (Pairof Symbol Number)))
+;; (define-type RGB (Listof (Pairof Symbol (U Char Complex False))))
 (: new-RGB (->* (Byte Byte Byte) RGB))
 (define (new-RGB r g b)
   (list (cons 'r r) (cons 'g g) (cons 'b b)))
-
 
 (struct color
   ([name : (U String Symbol)]
@@ -35,18 +41,22 @@
 
 ;; Auxiliary function that takes care
 ;; of the nitty-gritty of parsing the string.
-(define-type RGBList (Listof (U Char Complex False)))
+;; (define-type RGBList (Listof (U Char Complex False)))
+(define-type RGBList (Listof Number))
 (: aux (-> (Listof Char) RGBList RGBList))
 (define (aux cs acc)
   (if (null? cs)
       acc
-      (let ([acc_ (cons (string->number
-                         (list->string
-                          (cons #\#
-                                (cons #\x
-                                      (list (car cs)
-                                            (car (cdr cs)))))))
-                        acc)])
+      (let ([acc_
+             (filter
+               (λ (x) (complex? x))
+               (cons (string->number
+                      (list->string
+                       (cons #\#
+                             (cons #\x
+                                   (list (car cs)
+                                         (car (cdr cs)))))))
+                     acc))])
         (aux (cdr (cdr cs)) acc_))))
 
 ;; Converts a color hex value to a list

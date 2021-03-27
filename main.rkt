@@ -6,15 +6,17 @@
 (define-type YPlace (U String Symbol))
 
 (require "./color.rkt")
+
 (require/typed 2htdp/image
                [circle (-> Real Symbol Any Any)]
                [rectangle (-> Natural Natural Symbol Any Any)]
                [beside (-> Any * Any)]
                [above (-> Any * Any)]
                [overlay/align (-> XPlace YPlace Any * Any)]
-               [x-place? (-> XPlace Boolean)]
-               [y-place? (-> YPlace Boolean)]
-               [image? (-> Any Boolean)]
+               [make-color (-> Number Number Number Any)]
+;              [x-place? (-> XPlace Boolean)]
+;              [y-place? (-> YPlace Boolean)]
+;              [image? (-> Any Boolean)]
                [place-image (-> Any Real Real Any Any)])
                        
 (require/typed rackunit
@@ -23,27 +25,29 @@
 ;; Default colors and style
 (define MODE : Symbol 'solid)
 (define COLOR : String "white")
-(define DEFAULT_COLOR: (color "White" "f0f0f0"))
+(define DEFAULT_COLOR: (make-color 255 255 255))
 
-(: dot (-> Real Any))
-(define (dot radius)
-  (circle radius MODE COLOR))
+(: dot (->* (Real) (RGBList) Any))
+(define (dot radius [c (list 255 255 255)])
+  (circle radius
+          MODE
+          (make-color (car c)
+                      (cadr c)
+                      (car (cdr (cdr c))))))
 
 ;; test "dot"
 (check-equal? (dot 10) (circle 10 MODE COLOR))
 (check-equal? (dot 20)
               (circle 20 MODE COLOR))
+(check-equal? (dot 20 (list 234 45 120))
+              (circle 20 MODE (make-color 234 45 120)))
 
 ;; Create a horizontal row of dots with
 ;; radius `radius`,
 ;; margin `margin`, and 
 ;; number `n`.
 (: dots (-> Real Integer Natural Any))
-(define (dots radius n margin)
-;  (let ([u : Any (place-image
-;                  (dot radius)
-;                  (/ margin 2) (/ margin 2)
-;                  (rectangle (* margin 2) (* margin 2) 'solid "transparent"))])
+(define (dots radius n margin [colors '()])
   (let ([u : Any (overlay/align
                   'center 'middle
                   (dot radius)
