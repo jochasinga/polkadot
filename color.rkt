@@ -1,11 +1,21 @@
 #lang typed/racket
 
+(require typed/racket/base)
+
 (require/typed rackunit
                [check-equal? (-> Any Any Void)])
 
 (provide hex->rgb
          color
          ROSETTE_AND_CREAM)
+
+;; An assoc list like '(('r 255) ('g 255) ('b 0))
+;; (define-type RGB (Listof (Pairof Symbol Byte)))
+(define-type RGB (Listof (Pairof Symbol (U Char Complex False))))
+(: new-RGB (->* (Byte Byte Byte) RGB))
+(define (new-RGB r g b)
+  (list (cons 'r r) (cons 'g g) (cons 'b b)))
+
 
 (struct color
   ([name : (U String Symbol)]
@@ -39,7 +49,6 @@
                         acc)])
         (aux (cdr (cdr cs)) acc_))))
 
-
 ;; Converts a color hex value to a list
 ;; of RGB integer list.
 (: hex->rgb (-> String RGBList))
@@ -54,8 +63,26 @@
         (reverse (aux (string->list hex) '())))))
 
 
+;; Converts color struct to RGB assoc list.
+(: color->RGB (-> color RGB))
+(define (color->RGB c)
+  (let ([rgb (hex->rgb (color-hex c))])
+    (if (< (length rgb) 3)
+        (raise-argument-error
+         'color-hex
+         "rgb list needs to have length of 3"
+         rgb)
+        (list (cons 'r (car rgb))
+              (cons 'g (car (cdr rgb)))
+              (cons 'b (car (cdr (cdr rgb))))))))
+
 ;;;;;;;;;;;;;;;;;;; Tests ;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+(check-equal? (color->RGB (color "white" "ffffff"))
+              (list (cons 'r 255) (cons 'g 255) (cons 'b 255)))
+(check-equal? (color->RGB (color "black" "000000"))
+              (list (cons 'r 0) (cons 'g 0) (cons 'b 0)))
 
 (check-equal? (hex->rgb "FF") '(255))
 (check-equal? (hex->rgb "ff") '(255))
