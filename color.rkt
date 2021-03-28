@@ -14,11 +14,11 @@
          RGB
          RGBList
          new-RGB
+         DEFAULT_COLOR
          ROSETTE_AND_CREAM)
 
 ;; An assoc list like '(('r 255) ('g 255) ('b 0))
 (define-type RGB (Listof (Pairof Symbol Number)))
-;; (define-type RGB (Listof (Pairof Symbol (U Char Complex False))))
 (: new-RGB (->* (Byte Byte Byte) RGB))
 (define (new-RGB r g b)
   (list (cons 'r r) (cons 'g g) (cons 'b b)))
@@ -36,6 +36,7 @@
         (color "Cream" "FAE8E0")
         (color "Hot Pink" "EF7C8E")))
 
+(define DEFAULT_COLOR : RGBList '(0 0 0))
 (define MIN_HEX_DIGIT : Integer 2)
 (define MAX_HEX_DIGIT : Integer 6)
 

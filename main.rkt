@@ -2,9 +2,6 @@
 
 #lang typed/racket
 
-(define-type XPlace (U String Symbol))
-(define-type YPlace (U String Symbol))
-
 (require "./color.rkt")
 
 (require/typed 2htdp/image
@@ -14,9 +11,6 @@
                [above (-> Any * Any)]
                [overlay/align (-> XPlace YPlace Any * Any)]
                [make-color (-> Number Number Number Any)]
-;              [x-place? (-> XPlace Boolean)]
-;              [y-place? (-> YPlace Boolean)]
-;              [image? (-> Any Boolean)]
                [place-image (-> Any Real Real Any Any)])
                        
 (require/typed rackunit
@@ -24,37 +18,43 @@
 
 ;; Default colors and style
 (define MODE : Symbol 'solid)
-(define COLOR : String "white")
-(define DEFAULT_COLOR: (make-color 255 255 255))
 
 (: dot (->* (Real) (RGBList) Any))
-(define (dot radius [c (list 255 255 255)])
+(define (dot radius [c DEFAULT_COLOR])
   (circle radius
           MODE
           (make-color (car c)
                       (cadr c)
-                      (car (cdr (cdr c))))))
+                      (caddr c))))
 
-;; test "dot"
-(check-equal? (dot 10) (circle 10 MODE COLOR))
-(check-equal? (dot 20)
-              (circle 20 MODE COLOR))
-(check-equal? (dot 20 (list 234 45 120))
-              (circle 20 MODE (make-color 234 45 120)))
+(: dots-aux (-> Real Integer Natural (Listof RGBList) (Listof RGBList) Any))
+(define (dots-aux radius n margin colors acc)
+  (let ([u : Any (overlay/align
+                  'center 'middle
+                  (dot radius (car acc))
+                  (rectangle (* margin 2)
+                             (* margin 2)
+                             'solid
+                             "transparent"))])
+    (if (= n 1)
+        u
+        (beside u (dots-aux radius
+                            (- n 1)
+                            margin
+                            colors
+                            (if (null? (cdr acc))
+                                colors
+                                (cdr acc)))))))
+
 
 ;; Create a horizontal row of dots with
 ;; radius `radius`,
 ;; margin `margin`, and 
 ;; number `n`.
-(: dots (-> Real Integer Natural Any))
-(define (dots radius n margin [colors '()])
-  (let ([u : Any (overlay/align
-                  'center 'middle
-                  (dot radius)
-                  (rectangle (* margin 2) (* margin 2) 'solid "transparent"))])
-    (if (= n 1)
-        u
-        (beside u (dots radius (- n 1) margin)))))
+(: dots (->* (Real Integer Natural) ((Listof RGBList)) Any))
+(define (dots radius n margin [colors (list DEFAULT_COLOR)])
+  (dots-aux radius n margin colors colors))
+
 
 ;; Create a matrix of alternating rows of dots
 (: mdots (-> Real Integer Natural Natural Any))
@@ -70,7 +70,15 @@
          (mdots radius nx (- ny 1) margin)))))
            
              
+;;;;;;;;;;;;;;;;;; test "dot" ;;;;;;;;;;;;;;;;;;;;;
 
+(check-equal? (dot 10) (circle 10 MODE "black"))
+(check-equal? (dot 20)
+              (circle 20 MODE "black"))
+(check-equal? (dot 20 (list 234 45 120))
+              (circle 20 MODE (make-color 234 45 120)))
+(check-equal? (dot 20 (hex->rgb "ffffff"))
+              (circle 20 MODE (make-color 255 255 255)))
   
       
       
