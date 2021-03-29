@@ -31,10 +31,19 @@
 
 (define ROSETTE_AND_CREAM
   : (Listof color)
-  (list (color "Rosewater" "D8AB1")
+  (list (color "Rosewater" "D8AB10")
         (color "Spearmint" "B6E2D3")
         (color "Cream" "FAE8E0")
         (color "Hot Pink" "EF7C8E")))
+
+(: color->rgb (-> (Listof color) (Listof RGBList)))
+(define (color->rgb color-list)
+  (map
+   (λ (s) (hex->rgb s))
+   (map
+    (λ (c) (color-hex c))
+    color-list)))
+
 
 (define DEFAULT_COLOR : RGBList '(0 0 0))
 (define MIN_HEX_DIGIT : Integer 2)
