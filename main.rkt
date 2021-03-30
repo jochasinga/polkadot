@@ -49,8 +49,8 @@
                   'center 'middle
                   (dot radius (car acc))
                   (rectangle (* margin 2)
-                             (* margin 2)
-                             'solid
+                             margin
+                             'outline
                              "transparent"))])
     (if (= n 1)
         u
@@ -84,7 +84,7 @@
 (: mdots (->* (Real Integer Natural Natural) ((Listof RGBList)) Any))
 (define (mdots radius nx ny margin [colors (list DEFAULT_COLOR)])
   (let ([a (dots radius nx margin colors)]
-        [b (dots radius (- nx 1) margin (shift colors (- (length colors) 1)))])
+        [b (dots radius (- nx 1) margin (shift colors (random (length colors))))])
     (if (= ny 0)
         a
         (above

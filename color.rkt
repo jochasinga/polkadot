@@ -6,6 +6,7 @@
                [check-equal? (-> Any Any Void)])
 
 (provide hex->rgb
+         color->rgb
 ;        color
 ;        struct:color
 ;        make-color
@@ -31,7 +32,7 @@
 
 (define ROSETTE_AND_CREAM
   : (Listof color)
-  (list (color "Rosewater" "D8AB10")
+  (list (color "Rosewater" "D8A7B1")
         (color "Spearmint" "B6E2D3")
         (color "Cream" "FAE8E0")
         (color "Hot Pink" "EF7C8E")))
