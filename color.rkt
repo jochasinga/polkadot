@@ -14,7 +14,13 @@
          RGBList
          new-RGB
          DEFAULT_COLOR
-         ROSETTE_AND_CREAM)
+         ROSETTE_AND_CREAM
+         ROSY_FLAMINGO
+         RETRO_PUNCH
+         THE_DEEP_BLUE
+         THWARTED_SUMMER_SHOWER
+         BIRTH_SPRING
+         SAN_FRANCISCO_CLOUDED)
 
 ;; An assoc list like '(('r 255) ('g 255) ('b 0))
 (define-type RGB (Listof (Pairof Symbol Number)))
@@ -34,6 +40,48 @@
         (color "Spearmint" "B6E2D3")
         (color "Cream" "FAE8E0")
         (color "Hot Pink" "EF7C8E")))
+
+(define ROSY_FLAMINGO
+  : (Listof color)
+  (list (color "Coffee Pot" "67595E")
+        (color "Coffee Pot" "A49393")
+        (color "Dusty Rose" "EED6D3")
+        (color "Rosewater" "E8B4B8")))
+
+(define RETRO_PUNCH
+  : (Listof color)
+  (list (color "Chili Pepper" "F51720")
+        (color "Pink" "FA26A0")
+        (color "Gold" "F8D210")
+        (color "Cyan" "2FF3E0")))
+
+(define THE_DEEP_BLUE
+  : (Listof color)
+  (list (color "Baby Blue" "7EC8E3")
+        (color "Blue" "0000FF")
+        (color "Navy Blue" "000C66")
+        (color "Dark Blue" "050A30")))
+
+(define THWARTED_SUMMER_SHOWER
+  : (Listof color)
+  (list (color "Cornflower" "4C5270")
+        (color "Hot Pink" "F652A0")
+        (color "Cyan" "36EEE0")
+        (color "Tiffany Blue" "BCECE0")))
+
+(define BIRTH_SPRING
+  : (Listof color)
+  (list (color "Rosewater" "E4B4B4")
+        (color "Sage Green" "9DA993")
+        (color "Misty Blue" "E3E8E9")
+        (color "Nude" "BCA88E")))
+
+(define SAN_FRANCISCO_CLOUDED
+  : (Listof color)
+  (list (color "Misty Blue" "2F5061")
+        (color "Coral" "E57F84")
+        (color "Ivory" "F4EAE6")
+        (color "Teal Green" "4297A0")))
 
 (: color->rgb (-> (Listof color) (Listof RGBList)))
 (define (color->rgb color-list)
