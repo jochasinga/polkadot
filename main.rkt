@@ -5,7 +5,8 @@
 (define-type XPlace (U String Symbol))
 (define-type YPlace (U String Symbol))
 
-(require "./color.rkt")
+(require "./color.rkt"
+         "./util.rkt")
 
 (require/typed 2htdp/image
                [circle (-> Real Symbol Any Any)]
@@ -70,21 +71,12 @@
 (: dots (->* (Real Integer Natural) ((Listof RGBList)) Any))
 (define (dots radius n margin [colors (list DEFAULT_COLOR)])
   (dots-aux radius n margin colors colors))
-
-
-(: shift (All (T) (->* ((Listof T) Integer) ((Listof T)) (Listof T))))
-(define (shift ls n [acc '()])
-  (append
-   (take-right ls (- (length ls) n))
-   (take ls n)))
-
-(check-equal? (shift '(1 2 3 4 5) 2) '(3 4 5 1 2))
   
 ;; Create a matrix of alternating rows of dots
 (: mdots (->* (Real Integer Natural Natural) ((Listof RGBList)) Any))
 (define (mdots radius nx ny margin [colors (list DEFAULT_COLOR)])
-  (let ([a (dots radius nx margin colors)]
-        [b (dots radius (- nx 1) margin (shift colors (random (length colors))))])
+  (let ([a (dots radius nx margin (shuffle colors))]
+        [b (dots radius (- nx 1) margin (shift (shuffle colors) (random (length colors))))])
     (if (= ny 0)
         a
         (above

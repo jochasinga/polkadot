@@ -1,7 +1,5 @@
 #lang typed/racket
 
-(require typed/racket/base)
-
 (require/typed rackunit
                [check-equal? (-> Any Any Void)])
 
