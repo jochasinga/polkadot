@@ -3,3 +3,4 @@
 *.bak
 compiled
 bin
+*.svg

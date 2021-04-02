@@ -18,7 +18,8 @@
 ;              [x-place? (-> XPlace Boolean)]
 ;              [y-place? (-> YPlace Boolean)]
 ;              [image? (-> Any Boolean)]
-               [place-image (-> Any Real Real Any Any)])
+               [place-image (-> Any Real Real Any Any)]
+               [save-svg-image (->* (Any Path) (Real Real) Any)])
                        
 (require/typed rackunit
                [check-equal? (-> Any Any Void)])
@@ -61,7 +62,7 @@
                             colors
                             (if (null? (cdr acc))
                                 colors
-                                (cdr acc)))))))
+                                (shuffle (cdr acc))))))))
 
 
 ;; Create a horizontal row of dots with
