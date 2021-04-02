@@ -15,12 +15,16 @@
          new-RGB
          DEFAULT_COLOR
          ROSETTE_AND_CREAM
+         ROSETTE_AND_CREAM_TRIAGE
          ROSY_FLAMINGO
          RETRO_PUNCH
          THE_DEEP_BLUE
          THWARTED_SUMMER_SHOWER
          BIRTH_SPRING
-         SAN_FRANCISCO_CLOUDED)
+         SAN_FRANCISCO_CLOUDED
+         SAN_FRANCISCO_CLOUDED_TRIAGE
+         SO_MANY_LOST_SONGS
+         SHE)
 
 ;; An assoc list like '(('r 255) ('g 255) ('b 0))
 (define-type RGB (Listof (Pairof Symbol Number)))
@@ -40,6 +44,14 @@
         (color "Spearmint" "B6E2D3")
         (color "Cream" "FAE8E0")
         (color "Hot Pink" "EF7C8E")))
+
+(define ROSETTE_AND_CREAM_TRIAGE
+  : (Listof color)
+  (list (color "Rosewater" "D8A7B1")
+        (color "Spearmint" "B6E2D3")
+        ;(color "Cream" "FAE8E0")
+        (color "Hot Pink" "EF7C8E")))
+
 
 (define ROSY_FLAMINGO
   : (Listof color)
@@ -82,6 +94,29 @@
         (color "Coral" "E57F84")
         (color "Ivory" "F4EAE6")
         (color "Teal Green" "4297A0")))
+
+(define SAN_FRANCISCO_CLOUDED_TRIAGE
+  : (Listof color)
+  (list (color "Misty Blue" "2F5061")
+        (color "Coral" "E57F84")
+        ;;(color "Ivory" "F4EAE6")
+        (color "Teal Green" "4297A0")))
+
+(define SO_MANY_LOST_SONGS
+  : (Listof color)
+  (list (color "" "051E3E")
+        (color "" "251E3E")
+        (color "" "451E3E")
+        (color "" "651E3E")
+        (color "" "851E3E")))
+
+(define SHE
+  : (Listof color)
+  (list (color "" "DEC3C3")
+        (color "" "E7D3D3")
+        (color "" "F0E4E4")
+        (color "" "F9F4F4")
+        (color "" "FFFFFF")))
 
 (: color->rgb (-> (Listof color) (Listof RGBList)))
 (define (color->rgb color-list)
